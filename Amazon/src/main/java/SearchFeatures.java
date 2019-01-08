@@ -1,9 +1,7 @@
-package search;
-
 import base.CommonAPI;
 
 
-public class SearchPage extends CommonAPI {
+public class SearchFeatures extends CommonAPI {
     public void searchMenu(){
         typeOnElementNEnter("#twotabsearchtextbox","Flash Drive");
         navigateBack();
