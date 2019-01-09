@@ -1,14 +1,19 @@
 package pages;
 
 import base.CommonAPI;
+import datasource.DatabaseOperation;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static datasource.DatabaseOperation.getItemValue;
 
 public class SearchPage {
     @FindBy(how = How.CSS, using ="#twotabsearchtextbox")
@@ -44,13 +49,15 @@ public class SearchPage {
 //        return data;
 //    }
 
-    public void searchItemsAndSubmitButton()throws IOException {
-        List<String> list = getItemValue();
+    public void searchItemsAndSubmitButton()throws Exception, IOException, SQLException, ClassNotFoundException  {
+        DatabaseOperation databaseOperation = new DatabaseOperation();
+        List<String> list = databaseOperation.getItemsListFromDB();
         for(int i=0; i<list.size(); i++) {
             searchFor(list.get(i));
             submitSearchButton();
-            //validate books data
+            CommonAPI.driver.manage().timeouts().implicitlyWait(500,TimeUnit.MILLISECONDS);
             clearInput();
+
         }
     }
 
@@ -70,17 +77,6 @@ public class SearchPage {
         }
     }
 
-    public List<String> getItemValue(){
-        List<String> itemsList = new ArrayList<String>();
-        itemsList.add("Java Book");
-        itemsList.add("Selenium Book");
-        itemsList.add("Laptop");
-        itemsList.add("Honey");
-        itemsList.add("Toothpaste");
-        itemsList.add("ear-ring");
-        itemsList.add("ps4games");
-        itemsList.add("macAir");
 
-        return itemsList;
-    }
 }
+
